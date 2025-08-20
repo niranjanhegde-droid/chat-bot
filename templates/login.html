@@ -1,27 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" data-bs-theme="light">
 <head>
-    <title>Login</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Login</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+body { display:flex; justify-content:center; align-items:center; min-height:100vh; background:linear-gradient(135deg,#4f46e5,#06b6d4); }
+.card { border-radius:16px; box-shadow:0 8px 20px rgba(0,0,0,.15); }
+.form-control { border-radius:12px; }
+</style>
 </head>
-<body class="bg-light">
-<div class="container mt-5">
-    <h2>Login</h2>
-    {% if error %}
-        <div class="alert alert-danger">{{ error }}</div>
-    {% endif %}
-    <form method="POST">
-        <div class="mb-3">
-            <label>Username</label>
-            <input type="text" name="username" class="form-control" required>
-        </div>
-        <div class="mb-3">
-            <label>Password</label>
-            <input type="password" name="password" class="form-control" required>
-        </div>
-        <button type="submit" class="btn btn-success">Login</button>
-        <p class="mt-2">New user? <a href="/register">Register here</a></p>
-    </form>
+<body>
+<div class="card p-4" style="max-width:400px; width:100%">
+<div class="d-flex justify-content-between align-items-center mb-3">
+<h4 class="m-0">Login</h4>
+<button class="btn btn-sm btn-outline-secondary" id="themeToggle"><i id="themeIcon" class="bi bi-moon-stars"></i></button>
 </div>
-</body>
+<form method="POST" action="/login">
+<div class="mb-3">
+<label class="form-label">Username</label>
+<input type="text" class="form-control" name="username" required>
+</div>
+<div class="mb-3">
+<label class="form-label">Password</label>
+<div class="input-group">
+<input type="password" id="password" class="form-control" name="password" required>
+<button class="btn btn-outline-secondary" type="button" id="togglePassword"><i class="bi bi-eye"></i></button>
+</div>
+</div>
+<button type="submit" class="btn btn-primary w-100">Login</button>
+<p class="text-center mt-3 mb-0">No account? <a href="/register">Register</a></p>
+</form>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const preferred = localStorage.getItem('theme') || 'light';
+document.documentElement.setAttribute('data-bs-theme', preferred);
+const themeIcon = document.getElementById('themeIcon');
+const setIcon=()=>themeIcon.className=(document.documentElement.getAttribute('data-bs-theme')==='dark')?'bi bi-sun':'bi bi-moon-stars';
+setIcon();
+document.getElementById('themeToggle').onclick=()=>{
+const cur=document.documentElement.getAttribute('data-bs-theme');
+const next=cur==='dark'?'light':'dark';
+document.documentElement.setAttribute('data-bs-theme',next);localStorage.setItem('theme',next);setIcon();
+};
+document.getElementById('togglePassword').onclick=function(){
+const input=document.getElementById('password');
+input.type=input.type==='password'?'text':'password';
+this.innerHTML=input.type==='password'?'<i class="bi bi-eye"></i>':'<i class="bi bi-eye-slash"></i>';
+};
+</script>
 </html>
